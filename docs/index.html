@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feature Dictionary - SAE Feature Extraction & Labeling</title>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --text-primary: #f0f6fc;
+            --text-secondary: #8b949e;
+            --accent: #a371f7;
+            --accent-hover: #c69dff;
+            --success: #3fb950;
+            --border: #30363d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 0;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), #58a6ff);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-left: 24px;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .features {
+            padding: 80px 0;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 50px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+        }
+
+        .code-section {
+            padding: 80px 0;
+            background: var(--bg-secondary);
+        }
+
+        .code-section h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+        }
+
+        .code-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 24px;
+        }
+
+        .code-block {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .code-header {
+            background: var(--bg-tertiary);
+            padding: 12px 16px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .code-content {
+            padding: 16px;
+            overflow-x: auto;
+        }
+
+        pre {
+            margin: 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+        }
+
+        .keyword { color: #ff7b72; }
+        .string { color: #a5d6ff; }
+        .function { color: #d2a8ff; }
+        .comment { color: #8b949e; }
+        .class { color: #ffa657; }
+        .number { color: #79c0ff; }
+
+        .workflow {
+            padding: 80px 0;
+        }
+
+        .workflow h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 50px;
+        }
+
+        .workflow-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .workflow-step {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content h3 {
+            margin-bottom: 8px;
+        }
+
+        .step-content p {
+            color: var(--text-secondary);
+        }
+
+        .strategies {
+            padding: 80px 0;
+            background: var(--bg-secondary);
+        }
+
+        .strategies h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+        }
+
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .strategy-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .strategy-card h4 {
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .api-section {
+            padding: 80px 0;
+        }
+
+        .api-section h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+        }
+
+        .api-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .api-table th, .api-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .api-table th {
+            background: var(--bg-tertiary);
+            color: var(--accent);
+        }
+
+        .api-table td:first-child {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent);
+        }
+
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        footer p {
+            color: var(--text-secondary);
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .code-examples { grid-template-columns: 1fr; }
+            .header-content { flex-direction: column; gap: 20px; }
+            nav a { margin: 0 12px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">&#128218;</div>
+                    <span>Feature Dictionary</span>
+                </div>
+                <nav>
+                    <a href="#features">Features</a>
+                    <a href="#examples">Examples</a>
+                    <a href="#workflow">Workflow</a>
+                    <a href="#api">API</a>
+                    <a href="https://github.com/BabyChrist666/feature-dictionary">GitHub</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>SAE Feature Extraction & Labeling</h1>
+            <p>Extract meaningful features from Sparse Autoencoder activations. Automatically label features with semantic descriptions and analyze activation patterns.</p>
+            <div class="cta-buttons">
+                <a href="https://github.com/BabyChrist666/feature-dictionary" class="btn btn-primary">View on GitHub</a>
+                <a href="#examples" class="btn btn-secondary">See Examples</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <h2>Key Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">&#128269;</div>
+                    <h3>Feature Extraction</h3>
+                    <p>Process SAE activations and collect statistics about which features activate and when.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#127991;</div>
+                    <h3>Automatic Labeling</h3>
+                    <p>Multiple strategies for assigning semantic labels: token frequency, n-grams, pattern matching.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#128202;</div>
+                    <h3>Analysis Tools</h3>
+                    <p>Find correlations, polysemantic features, and compute importance rankings.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#128206;</div>
+                    <h3>Pattern Detection</h3>
+                    <p>Built-in patterns for numbers, punctuation, code keywords, and custom regex.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#128200;</div>
+                    <h3>Feature Types</h3>
+                    <p>Classify features as dead, ultra-sparse, sparse, moderate, or dense.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#128190;</div>
+                    <h3>Serialization</h3>
+                    <p>Save and load feature dictionaries for later analysis and sharing.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="code-section" id="examples">
+        <div class="container">
+            <h2>Code Examples</h2>
+            <div class="code-examples">
+                <div class="code-block">
+                    <div class="code-header">Basic Usage</div>
+                    <div class="code-content">
+<pre><span class="keyword">from</span> feature_dictionary <span class="keyword">import</span> create_dictionary
+
+<span class="comment"># Create dictionary for your SAE</span>
+dictionary = <span class="function">create_dictionary</span>(
+    num_features=<span class="number">4096</span>,
+    feature_dim=<span class="number">768</span>,
+    model_name=<span class="string">"gpt2"</span>,
+    sae_name=<span class="string">"sae_layer5"</span>,
+)
+
+<span class="comment"># Process SAE activations</span>
+dictionary.<span class="function">process</span>(activations, tokens)
+
+<span class="comment"># Finalize and label</span>
+dictionary.<span class="function">finalize</span>()
+
+<span class="comment"># Query features</span>
+feature = dictionary.<span class="function">get_feature</span>(<span class="number">42</span>)
+<span class="keyword">print</span>(feature.labels)
+<span class="keyword">print</span>(feature.description)</pre>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">Feature Analysis</div>
+                    <div class="code-content">
+<pre><span class="keyword">from</span> feature_dictionary <span class="keyword">import</span> FeatureAnalyzer
+
+analyzer = <span class="class">FeatureAnalyzer</span>(feature_set)
+
+<span class="comment"># Compute statistics</span>
+stats = analyzer.<span class="function">compute_activation_stats</span>(feature)
+<span class="keyword">print</span>(<span class="string">f"Mean: </span>{stats.mean_activation}<span class="string">"</span>)
+<span class="keyword">print</span>(<span class="string">f"Entropy: </span>{stats.token_entropy}<span class="string">"</span>)
+
+<span class="comment"># Find correlations</span>
+correlated = analyzer.<span class="function">find_correlated_features</span>(<span class="number">42</span>)
+
+<span class="comment"># Find polysemantic features</span>
+poly = analyzer.<span class="function">find_polysemantic_features</span>()
+
+<span class="comment"># Importance ranking</span>
+importance = analyzer.<span class="function">compute_feature_importance</span>()</pre>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">Custom Labeling</div>
+                    <div class="code-content">
+<pre><span class="keyword">from</span> feature_dictionary <span class="keyword">import</span> FeatureLabeler, LabelingConfig
+
+config = <span class="class">LabelingConfig</span>(
+    min_token_frequency=<span class="number">3</span>,
+    max_labels=<span class="number">5</span>,
+    patterns={
+        <span class="string">"email"</span>: <span class="string">r"^[\w.]+@[\w.]+$"</span>,
+        <span class="string">"url"</span>: <span class="string">r"^https?://"</span>,
+    },
+)
+
+labeler = <span class="class">FeatureLabeler</span>(config)
+
+<span class="comment"># Label features</span>
+labels = labeler.<span class="function">label_feature</span>(feature)
+<span class="keyword">for</span> label <span class="keyword">in</span> labels:
+    <span class="keyword">print</span>(<span class="string">f"</span>{label.text}<span class="string">: </span>{label.confidence:.2f}<span class="string">"</span>)</pre>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">Search & Query</div>
+                    <div class="code-content">
+<pre><span class="comment"># Search by token</span>
+results = dictionary.<span class="function">search_by_token</span>(<span class="string">"hello"</span>)
+<span class="keyword">for</span> fid, activation <span class="keyword">in</span> results:
+    <span class="keyword">print</span>(<span class="string">f"Feature </span>{fid}<span class="string">: </span>{activation}<span class="string">"</span>)
+
+<span class="comment"># Search by label</span>
+number_features = dictionary.<span class="function">search_by_label</span>(<span class="string">"number"</span>)
+
+<span class="comment"># Search by pattern</span>
+digit_features = dictionary.<span class="function">search_by_pattern</span>(<span class="string">r"^\d+$"</span>)
+
+<span class="comment"># Get top features</span>
+top = dictionary.<span class="function">get_top_features</span>(<span class="number">10</span>, by=<span class="string">"activation_count"</span>)
+
+<span class="comment"># Find similar features</span>
+similar = dictionary.<span class="function">find_similar</span>(<span class="number">42</span>, top_k=<span class="number">5</span>)</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="workflow" id="workflow">
+        <div class="container">
+            <h2>Workflow</h2>
+            <div class="workflow-steps">
+                <div class="workflow-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Create Dictionary</h3>
+                        <p>Initialize a feature dictionary with your SAE's configuration (number of features, dimensions).</p>
+                    </div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Process Activations</h3>
+                        <p>Feed SAE activations and corresponding tokens through the dictionary to collect activation statistics.</p>
+                    </div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Finalize</h3>
+                        <p>Compute labels, descriptions, and statistics for all features. Classify feature types.</p>
+                    </div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Analyze & Query</h3>
+                        <p>Search features by token, label, or pattern. Find correlations and polysemantic features.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="strategies">
+        <div class="container">
+            <h2>Labeling Strategies</h2>
+            <div class="strategy-grid">
+                <div class="strategy-card">
+                    <h4>Token Frequency</h4>
+                    <p>Labels based on most common activating tokens</p>
+                </div>
+                <div class="strategy-card">
+                    <h4>N-gram Analysis</h4>
+                    <p>Identifies significant n-gram patterns in context</p>
+                </div>
+                <div class="strategy-card">
+                    <h4>Pattern Matching</h4>
+                    <p>Regex patterns for numbers, punctuation, code</p>
+                </div>
+                <div class="strategy-card">
+                    <h4>Manual Labels</h4>
+                    <p>Support for human-provided annotations</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="api-section" id="api">
+        <div class="container">
+            <h2>API Reference</h2>
+            <table class="api-table">
+                <thead>
+                    <tr>
+                        <th>Class</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>FeatureDictionary</td>
+                        <td>High-level API for feature extraction and analysis</td>
+                    </tr>
+                    <tr>
+                        <td>FeatureExtractor</td>
+                        <td>Processes SAE activations and collects statistics</td>
+                    </tr>
+                    <tr>
+                        <td>FeatureLabeler</td>
+                        <td>Assigns semantic labels to features</td>
+                    </tr>
+                    <tr>
+                        <td>FeatureAnalyzer</td>
+                        <td>Analyzes feature activation patterns</td>
+                    </tr>
+                    <tr>
+                        <td>Feature</td>
+                        <td>Single SAE feature with activation data</td>
+                    </tr>
+                    <tr>
+                        <td>FeatureSet</td>
+                        <td>Collection of features from a layer</td>
+                    </tr>
+                    <tr>
+                        <td>ActivationStats</td>
+                        <td>Statistical summary of feature activations</td>
+                    </tr>
+                    <tr>
+                        <td>Label</td>
+                        <td>Semantic label with confidence score</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>Built for interpretability research | <a href="https://github.com/BabyChrist666/feature-dictionary">GitHub</a></p>
+        </div>
+    </footer>
+</body>
+</html>
