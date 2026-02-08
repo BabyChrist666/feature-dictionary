@@ -1,5 +1,10 @@
 # Feature Dictionary
 
+[![Tests](https://github.com/BabyChrist666/feature-dictionary/actions/workflows/tests.yml/badge.svg)](https://github.com/BabyChrist666/feature-dictionary/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/gh/BabyChrist666/feature-dictionary/branch/master/graph/badge.svg)](https://codecov.io/gh/BabyChrist666/feature-dictionary)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Automated feature extraction and labeling from Sparse Autoencoders (SAEs). Extract meaningful features from neural network activations, label them with semantic descriptions, and analyze activation patterns.
 
 ## Features
